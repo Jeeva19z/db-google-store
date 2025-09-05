@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Save to Google Sheet</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 50px; }
+    form { max-width: 400px; margin: auto; }
+    input, button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      background: orange;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover { background: darkorange; }
+  </style>
+</head>
+<body>
+
+  <h2>Simple Form</h2>
+  <form id="myForm">
+    <input type="text" id="name" placeholder="Enter your name" required>
+    <input type="email" id="email" placeholder="Enter your email" required>
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbwhQhLAzRqZDc8G2NtddihHo5x01MPYf5QWOMETjJSoQNjBu4YZJK6EOGUKqq-Q2FdX/exec";
+
+    function encodeFormData(data) {
+      return Object.keys(data)
+        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
+        .join('&');
+    }
+
+    document.getElementById("myForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const data = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value
+      };
+
+      fetch(scriptURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: encodeFormData(data)
+      })
+      .then(response => alert("✅ Submitted Successfully!"))
+      .catch(error => alert("❌ Error submitting form"));
+    });
+  </script>
+
+</body>
+</html>
